@@ -1,0 +1,74 @@
+diff -ur njam-1.25-src.orig/src/njam.cpp njam-1.25-src/src/njam.cpp
+--- njam-1.25-src.orig/src/njam.cpp	2005-12-13 12:56:43.000000000 +0100
++++ njam-1.25-src/src/njam.cpp	2006-03-26 20:29:22.000000000 +0200
+@@ -47,12 +49,24 @@
+ #include "njamfont.h"
+ #include "njammap.h"
+ #include "njam.h"
++
++static FILE* highscore_fp;
++
+ //-----------------------------------------------------------------------------
+ int main(int argc, char *argv[])
+ {
+  	bool Fullscreen = true;
+  	bool SWSurface = true;
+ 	bool UseDGA = false;
++	gid_t realgid;
++	
++	highscore_fp = fopen("/var/lib/games/njam.hs", "r+");
++        realgid = getgid();
++        if (setresgid(-1, realgid, realgid) != 0) {
++                perror("Could not drop setgid privileges.  Aborting.");
++                return 1;
++        }
++	
+  	if (argc > 1)
+  	{
+  		for (int i=1; i<argc; i++)
+@@ -237,12 +251,12 @@
+ 	}
+ 
+ 		// format: NAME#POINTS#LEVEL#
+-	fp = fopen("hiscore.dat", "w+");
+-	if (fp)
++	if (highscore_fp)
+ 	{
++		rewind(highscore_fp);
+ 		for (int i=0; i<10; i++)
+-			fprintf(fp, "%s#%d#%d#\n", TopTenScores[i].name, TopTenScores[i].points, TopTenScores[i].level);
+-		fclose(fp);
++			fprintf(highscore_fp, "%s#%d#%d#\n", TopTenScores[i].name, TopTenScores[i].points, TopTenScores[i].level);
++		fclose(highscore_fp);
+ 	}
+ 
+ 	if (m_SDL)
+@@ -665,15 +679,14 @@
+ 
+ 	// load hiscore from file (if any)
+ 	// format: NAME#POINTS#LEVEL#
+-	fp = fopen("hiscore.dat", "r");
+-	if (fp)
++	if (highscore_fp)
+ 	{
+-		LogFile("Reading hiscore.dat\n");
++		LogFile("Reading /var/games/njam.hs\n");
+ 		char buff[40];
+ 		int number = 0;
+-		while (!feof(fp) && number < 10)
++		while (!feof(highscore_fp) && number < 10)
+ 		{
+-			fgets(buff, 40, fp);
++			fgets(buff, 40, highscore_fp);
+ 			int i = 0, last;
+ 
+ 			// name
+@@ -703,8 +716,6 @@
+ 
+ 			number++;
+ 		}
+-
+-		fclose(fp);
+ 	}
+ 
+     LogFile("Opening audio...");
