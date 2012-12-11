@@ -1,0 +1,83 @@
+.de P!
+.fl
+\!!1 setgray
+.fl
+\\&.\"
+.fl
+\!!0 setgray
+.fl			\" force out current output buffer
+\!!save /psv exch def currentpoint translate 0 0 moveto
+\!!/showpage{}def
+.fl			\" prolog
+.sy sed \-e 's/^/!/' \\$1\" bring in postscript file
+\!!psv restore
+.
+.de pF
+.ie     \\*(f1 .ds f1 \\n(.f
+.el .ie \\*(f2 .ds f2 \\n(.f
+.el .ie \\*(f3 .ds f3 \\n(.f
+.el .ie \\*(f4 .ds f4 \\n(.f
+.el .tm ? font overflow
+.ft \\$1
+..
+.de fP
+.ie     !\\*(f4 \{\
+.	ft \\*(f4
+.	ds f4\"
+'	br \}
+.el .ie !\\*(f3 \{\
+.	ft \\*(f3
+.	ds f3\"
+'	br \}
+.el .ie !\\*(f2 \{\
+.	ft \\*(f2
+.	ds f2\"
+'	br \}
+.el .ie !\\*(f1 \{\
+.	ft \\*(f1
+.	ds f1\"
+'	br \}
+.el .tm ? font underflow
+..
+.ds f1\"
+.ds f2\"
+.ds f3\"
+.ds f4\"
+'\" t 
+.ta 8n 16n 24n 32n 40n 48n 56n 64n 72n  
+.TH "NJAM" "6" 
+.SH "NAME" 
+njam \(em maze-game, eat all the cookies while avoiding the badguys
+.SH "SYNOPSIS" 
+.PP 
+\fBnjam\fR [-w]  [-h]  [-d]  
+.SH "DESCRIPTION" 
+.PP 
+\fBnjam\fR is a fast-paced maze-game where you must eat all the cookies while
+avoiding the badguys. Special cookies give you the power to freeze or eat the
+bad guys. The game features single and multiplayer modes, network play,
+duelling and cooperative games, great music and sound effects, customizable
+level skins, many different levels and an integrated level editor.
+.SH "OPTIONS" 
+.PP 
+The options are; 
+ 
+.IP "\fB\-w\fP 	" 10 
+Start in windowed mode (as opposed to fullscreen) 
+.IP "\fB\-h\fP 	" 10 
+use hardware surfaces (faster, doesn't work well with all graphic cards 
+.IP "\fB\-d\fP 	      " 10 
+use DGA driver on Linux, (must faster, but must run as root) 
+.SH "AUTHOR" 
+.IP "Application:" 10 
+M.Babuskov <mbabuskov at yahoo.com> 
+.PP 
+This manual page was written by Anibal Avelar avelar@gmail.com for the Debian
+Project based on the manual wrote by Stephan Hermann sh@sourcecode.de for the
+\fBUbuntu\fP system. It has been modified for \fBFedora Extras\fP by Hans de
+Goede j.w.r.degoede@hhs.nl. Permission is granted to copy, distribute and/or
+modify this document under the terms of the GNU General Public License, Version
+2 or (at your option) any later version published by the Free Software
+Foundation. 
+ 
+.\" created by instant / docbook-to-man, Sun 20 Nov 2005, 20:58 

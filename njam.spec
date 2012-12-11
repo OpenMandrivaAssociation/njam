@@ -12,9 +12,8 @@ Patch0:		njam-1.25-drop-setgid.patch
 Patch1:		njam-1.25-html.patch
 Patch2:		njam-1.25-leveledit.patch
 Patch3:		njam-1.25-gcc45.patch
-BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:	SDL-devel SDL_mixer-devel SDL_image-devel SDL_net-devel 
-BuildRequires:	ImageMagick desktop-file-utils
+BuildRequires:	imagemagick desktop-file-utils
 Requires:	hicolor-icon-theme 
 
 %description
@@ -102,3 +101,10 @@ fi
 %{_datadir}/applications/mandriva-%{name}.desktop
 %{_datadir}/icons/hicolor/32x32/apps/%{name}.png
 %config(noreplace) %attr (0664,root,games) %{_var}/lib/games/%{name}.hs
+
+
+%changelog
+* Thu Sep 22 2011 Alexander Barakin <abarakin@mandriva.org> 1.25-1mdv2012.0
++ Revision: 700966
+- imported package njam
+
