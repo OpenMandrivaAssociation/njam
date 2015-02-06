@@ -1,6 +1,6 @@
 Name:		njam
 Version:	1.25
-Release:	%mkrel 1
+Release:	2
 Summary:	Maze-game, eat all the cookies while avoiding the badguys
 Group:		Games/Arcade 
 License:	GPLv2+
