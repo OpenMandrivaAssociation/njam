@@ -19,6 +19,8 @@ BuildRequires:	pkgconfig(SDL_image)
 BuildRequires:	pkgconfig(SDL_net)
 BuildRequires:	imagemagick 
 BuildRequires:	desktop-file-utils
+BuildRequires: gcc-c++, gcc, gcc-cpp
+
 Requires:	hicolor-icon-theme 
 
 %description
@@ -38,7 +40,10 @@ level skins, many different levels and an integrated level editor.
 
 
 %build
-export	CFLAGS=" $ RPM_OPT_FLAGS"
+export CC=gcc
+export CXX=g++
+
+#export	CFLAGS="%{optflags}"
 export	CFLAGS='-O2 -g -frecord-gcc-switches -Wstrict-aliasing=2 -pipe -Wformat -Wp,-D_FORTIFY_SOURCE=2 -fstack-protector --param=ssp-buffer-size=4 -fPIC'
 export	CXXFLAGS="$CFLAGS"
 %configure
@@ -52,31 +57,31 @@ convert -transparent black njamicon.ico %{name}.png
 %makeinstal_std
 
 # make install installs the docs under /usr/share/njam. We want them in % doc.
-rm $RPM_BUILD_ROOT%{_datadir}/%{name}/README
-rm $RPM_BUILD_ROOT%{_datadir}/%{name}/levels/readme.txt
-rm -fr $RPM_BUILD_ROOT%{_datadir}/%{name}/html
+rm %{buildroot}%{_datadir}/%{name}/README
+rm %{buildroot}%{_datadir}/%{name}/levels/readme.txt
+rm -fr %{buildroot}%{_datadir}/%{name}/html
 
 # clean up cruft
-rm $RPM_BUILD_ROOT%{_datadir}/%{name}/%{name}.*
-rm $RPM_BUILD_ROOT%{_datadir}/%{name}/njamicon.ico
+rm %{buildroot}%{_datadir}/%{name}/%{name}.*
+rm %{buildroot}%{_datadir}/%{name}/njamicon.ico
 
 # we want the hiscore in /var/lib/games
-mkdir -p $RPM_BUILD_ROOT%{_var}/lib/games
-mv $RPM_BUILD_ROOT%{_datadir}/%{name}/hiscore.dat \
-  $RPM_BUILD_ROOT%{_var}/lib/games/%{name}.hs
+mkdir -p %{buildroot}%{_var}/lib/games
+mv %{buildroot}%{_datadir}/%{name}/hiscore.dat \
+  %{buildroot}%{_var}/lib/games/%{name}.hs
 
 # add the manpage (courtesy of Debian)
-mkdir -p $RPM_BUILD_ROOT%{_mandir}/man6
-install -m 644 %{SOURCE1} $RPM_BUILD_ROOT%{_mandir}/man6
+mkdir -p %{buildroot}%{_mandir}/man6
+install -m 644 %{SOURCE1} %{buildroot}%{_mandir}/man6
 
 # below is the desktop file and icon stuff.
-mkdir -p $RPM_BUILD_ROOT%{_datadir}/applications
+mkdir -p %{buildroot}%{_datadir}/applications
 desktop-file-install --vendor mandriva		\
-  --dir $RPM_BUILD_ROOT%{_datadir}/applications \
+  --dir %{buildroot}%{_datadir}/applications \
   %{SOURCE2}
-mkdir -p $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/32x32/apps
+mkdir -p %{buildroot}%{_datadir}/icons/hicolor/32x32/apps
 install -p -m 644 %{name}.png \
-  $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/32x32/apps
+  %{buildroot}%{_datadir}/icons/hicolor/32x32/apps
 
 
 
