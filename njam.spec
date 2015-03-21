@@ -12,8 +12,13 @@ Patch0:		njam-1.25-drop-setgid.patch
 Patch1:		njam-1.25-html.patch
 Patch2:		njam-1.25-leveledit.patch
 Patch3:		njam-1.25-gcc45.patch
-BuildRequires:	SDL-devel SDL_mixer-devel SDL_image-devel SDL_net-devel 
-BuildRequires:	imagemagick desktop-file-utils
+
+BuildRequires:	pkgconfig(sdl) 
+BuildRequires:	pkgconfig(SDL_mixer)
+BuildRequires:	pkgconfig(SDL_image)
+BuildRequires:	pkgconfig(SDL_net)
+BuildRequires:	imagemagick 
+BuildRequires:	desktop-file-utils
 Requires:	hicolor-icon-theme 
 
 %description
@@ -33,19 +38,18 @@ level skins, many different levels and an integrated level editor.
 
 
 %build
-#export	CFLAGS=" $ RPM_OPT_FLAGS"
+export	CFLAGS=" $ RPM_OPT_FLAGS"
 export	CFLAGS='-O2 -g -frecord-gcc-switches -Wstrict-aliasing=2 -pipe -Wformat -Wp,-D_FORTIFY_SOURCE=2 -fstack-protector --param=ssp-buffer-size=4 -fPIC'
 export	CXXFLAGS="$CFLAGS"
 %configure
 
 make 
-#% {?_smp_mflags}
 convert -transparent black njamicon.ico %{name}.png
 
 
 %install
-rm -rf $RPM_BUILD_ROOT
-make install DESTDIR=$RPM_BUILD_ROOT
+
+%makeinstal_std
 
 # make install installs the docs under /usr/share/njam. We want them in % doc.
 rm $RPM_BUILD_ROOT%{_datadir}/%{name}/README
@@ -75,25 +79,8 @@ install -p -m 644 %{name}.png \
   $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/32x32/apps
 
 
-%clean
-rm -rf $RPM_BUILD_ROOT
-
-
-%post
-touch --no-create %{_datadir}/icons/hicolor || :
-if [ -x %{_bindir}/gtk-update-icon-cache ]; then
-   %{_bindir}/gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor || :
-fi
-
-%postun
-touch --no-create %{_datadir}/icons/hicolor || :
-if [ -x %{_bindir}/gtk-update-icon-cache ]; then
-   %{_bindir}/gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor || :
-fi
-
 
 %files
-%defattr(-,root,root,-)
 %doc COPYING ChangeLog NEWS README TODO levels/readme.txt html
 %attr(2755,root,games) %{_bindir}/%{name}
 %{_datadir}/%{name}
@@ -101,10 +88,4 @@ fi
 %{_datadir}/applications/mandriva-%{name}.desktop
 %{_datadir}/icons/hicolor/32x32/apps/%{name}.png
 %config(noreplace) %attr (0664,root,games) %{_var}/lib/games/%{name}.hs
-
-
-%changelog
-* Thu Sep 22 2011 Alexander Barakin <abarakin@mandriva.org> 1.25-1mdv2012.0
-+ Revision: 700966
-- imported package njam
 
