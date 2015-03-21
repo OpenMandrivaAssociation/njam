@@ -54,7 +54,7 @@ convert -transparent black njamicon.ico %{name}.png
 
 %install
 
-%makeinstal_std
+%makeinstall_std
 
 # make install installs the docs under /usr/share/njam. We want them in % doc.
 rm %{buildroot}%{_datadir}/%{name}/README
