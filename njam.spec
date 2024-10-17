@@ -4,7 +4,7 @@ Release:	2
 Summary:	Maze-game, eat all the cookies while avoiding the badguys
 Group:		Games/Arcade 
 License:	GPLv2+
-URL:		http://njam.sourceforge.net/
+URL:		https://njam.sourceforge.net/
 Source0:	%{name}-%{version}-src.tar.gz
 Source1:	njam.6
 Source2:	njam.desktop
