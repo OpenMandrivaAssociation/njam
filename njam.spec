@@ -13,6 +13,11 @@ Patch1:		njam-1.25-html.patch
 Patch2:		njam-1.25-leveledit.patch
 Patch3:		njam-1.25-gcc45.patch
 
+BuildRequires:	autoconf
+BuildRequires:	automake
+BuildRequires:	libtool-base
+BuildRequires:	slibtool
+BuildRequires:	make
 BuildRequires:	pkgconfig(sdl) 
 BuildRequires:	pkgconfig(SDL_mixer)
 BuildRequires:	pkgconfig(SDL_image)
